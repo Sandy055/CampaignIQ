@@ -158,3 +158,36 @@ print(f"   Top Campaign by Revenue: {revenue_by_campaign.iloc[0]['campaign_name'
 print(f"   Highest Conversion Rate: {conversion_rate.iloc[0]['campaign_name']} ({conversion_rate.iloc[0]['conversion_rate_pct']}%)")
 print(f"   Highest Churn Segment:   {churn_by_segment.iloc[0]['segment']} ({churn_by_segment.iloc[0]['churn_rate_pct']}%)")
 print(f"   Top Revenue Region:      {revenue_by_region.iloc[0]['region']} (${revenue_by_region.iloc[0]['total_revenue']:,})")
+
+# --- Retention Analysis ---
+conn = sqlite3.connect("data/campaigniq.db")
+customers.to_sql("customers", conn, if_exists="replace", index=False)
+interactions.to_sql("interactions", conn, if_exists="replace", index=False)
+
+retention = pd.read_sql_query("""
+    SELECT 
+        strftime('%Y-%m', i.interaction_date) AS month,
+        COUNT(DISTINCT i.customer_id) AS active_customers,
+        ROUND(100.0 * COUNT(DISTINCT i.customer_id) / (SELECT COUNT(*) FROM customers), 2) AS retention_rate_pct
+    FROM interactions i
+    JOIN customers c ON i.customer_id = c.customer_id
+    WHERE c.churned = 0
+    GROUP BY month
+    ORDER BY month ASC
+""", conn)
+conn.close()
+
+retention.to_csv("outputs/retention_trend.csv", index=False)
+
+# Retention chart
+plt.figure(figsize=(14, 5))
+plt.plot(retention["month"], retention["retention_rate_pct"], marker="o", color="green", linewidth=2)
+plt.title("Monthly Customer Retention Rate (%)", fontsize=14, fontweight="bold")
+plt.xlabel("Month")
+plt.ylabel("Retention Rate (%)")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("outputs/charts/retention_trend.png")
+plt.close()
+
+print("✅ Retention trend saved to outputs/charts/retention_trend.png")
