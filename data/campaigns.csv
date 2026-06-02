@@ -1,0 +1,11 @@
+campaign_id,campaign_name,channel,start_date,budget
+CAMP_001,Spring Sale,Paid Search,2024-01-07,46363
+CAMP_002,Email Blast Q1,Referral,2024-02-11,49852
+CAMP_003,Referral Push,Email,2024-03-17,23833
+CAMP_004,Holiday Deals,Paid Search,2024-04-21,19908
+CAMP_005,Re-engagement,Referral,2024-05-26,10923
+CAMP_006,Summer Launch,Paid Search,2024-06-30,33440
+CAMP_007,VIP Loyalty,Referral,2024-08-04,11451
+CAMP_008,Product Upsell,Email,2024-09-08,46533
+CAMP_009,Win-back Q3,Email,2024-10-13,11586
+CAMP_010,Year End Promo,Social,2024-11-17,34076

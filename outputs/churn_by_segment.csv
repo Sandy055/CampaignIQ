@@ -1,0 +1,4 @@
+segment,total_customers,churned_customers,churn_rate_pct,avg_lifetime_value
+Enterprise,153,53,34.64,2492.1
+SMB,186,59,31.72,2285.69
+Consumer,161,48,29.81,2575.88
